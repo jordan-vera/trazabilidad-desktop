@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+    background-color: rgb(221, 221, 221);
+}
+
+.cursorg {
+    cursor: pointer;
+}
+
+.error-input {
+    background-color: rgb(243, 155, 155);
+    margin-top: 4px;
+    padding-left: 10px;
+}

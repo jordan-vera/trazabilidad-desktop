@@ -1,0 +1,6 @@
+.msj-error {
+    color: red;
+    border: solid 1px red;
+    padding: 5px;
+    margin-bottom: 10px;
+}

@@ -1,0 +1,120 @@
+<div class="container-fluid">
+    <h4><i class="fas fa-users-cog"></i> Evaluadores</h4>
+    <hr>
+
+    <div class="row">
+        <div class="col-lg-4 border-end border-secondary">
+            <form #formEvaluador="ngForm" id="formEvaluador">
+                <label><b>Agregar evaluador</b></label>
+
+                <br> <br>
+                <label>Cédula:</label>
+                <input type="text" class="form-control" name="cedula" #cedula="ngModel" [(ngModel)]="evaluador.CEDULA"
+                    maxlength="10" minlength="10" pattern="[0-9]+" required>
+                <div class="error-input rounded" *ngIf="cedula.invalid && cedula.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+                <br>
+                <label>Nombres:</label>
+                <input type="text" class="form-control" name="nombres" #nombres="ngModel"
+                    [(ngModel)]="evaluador.NOMBRES" required>
+                <div class="error-input rounded" *ngIf="nombres.invalid && nombres.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+                <br>
+                <label>Empresa:</label>
+                <input type="text" class="form-control" name="empresa" #empresa="ngModel"
+                    [(ngModel)]="evaluador.EMPRESA" required>
+                <div class="error-input rounded" *ngIf="empresa.invalid && empresa.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+                <br>
+                <button class="btn btn-outline-dark w-100 mb-5" [disabled]="formEvaluador.invalid"
+                    (click)="guardarEvaluador()">
+                    <i class="far fa-save"></i> Guardar
+                </button>
+            </form>
+        </div>
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6"></div>
+                <div class="col-lg-6">
+                    <input type="text" class="form-control" placeholder="Buscar" name="busquedae"
+                        [(ngModel)]="busquedatxt">
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Cédula</th>
+                            <th scope="col">Nombres</th>
+                            <th scope="col">Empresa</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let x of evaluadores |filter:busquedatxt">
+                            <td><small>{{x.CEDULA}}</small></td>
+                            <td><small>{{x.NOMBRES}}</small></td>
+                            <td><small>{{x.EMPRESA}}</small></td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" (click)="eliminar(x.IDEVALUADOR)">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                                <button class="btn btn-sm btn-info ms-3" data-bs-toggle="modal"
+                                    data-bs-target="#modalUpEva" (click)="mostrarOne(x.IDEVALUADOR)">
+                                    <i class="far fa-edit"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-spinner></app-spinner>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalUpEva" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <i class="far fa-edit"></i> Modificar Evaluador
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label>Cédula:</label>
+                <input type="text" class="form-control w-50" name="cedulaup" #cedulaup="ngModel"
+                    [(ngModel)]="evaluadorOne.CEDULA" maxlength="10" minlength="10" pattern="[0-9]+" required>
+                <div class="error-input rounded" *ngIf="cedulaup.invalid && cedulaup.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+                <br>
+                <label>Nombres:</label>
+                <input type="text" class="form-control" name="nombresup" #nombresup="ngModel"
+                    [(ngModel)]="evaluadorOne.NOMBRES" required>
+                <div class="error-input rounded" *ngIf="nombresup.invalid && nombresup.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+                <br>
+                <label>Empresa:</label>
+                <input type="text" class="form-control" name="empresaup" #empresaup="ngModel"
+                    [(ngModel)]="evaluadorOne.EMPRESA" required>
+                <div class="error-input rounded" *ngIf="empresaup.invalid && empresaup.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+                <br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-info" (click)="actualizar()">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,123 @@
+<div class="container-fluid">
+    <h4><i class="fas fa-poll-h"></i> Lotes</h4>
+    <hr>
+
+    <div class="row">
+        <div class="col-lg-4 border-end border-secondary">
+            <form #formLote="ngForm" id="formLote">
+                <label><b>Agregar Lote</b></label>
+                <br> <br>
+                <label>Nombres de lote:</label>
+                <input type="text" class="form-control" name="nombrel" #nombrel="ngModel" [(ngModel)]="lote.NOMBRELOTE"
+                    required (ngModelChange)="lote.NOMBRELOTE = $event.toUpperCase()">
+                <div class="error-input rounded" *ngIf="nombrel.invalid && nombrel.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+
+                <br>
+
+                <label>Número de hectáreas:</label>
+                <input type="text" class="form-control" name="hectl" #hectls="ngModel" [(ngModel)]="lote.HECTAREAS"
+                    maxlength="3" pattern="[0-9]+" required>
+                <div class="error-input rounded" *ngIf="hectls.invalid && hectls.touched">
+                    <small>Campo invalido!! (solo número)</small>
+                </div>
+
+                <br>
+
+                <label>Plantación: (valor aproximado)</label>
+                <input type="number" class="form-control" name="plantacion" #plantacion="ngModel"
+                    [(ngModel)]="lote.PLANTACION" required>
+                <div class="error-input rounded" *ngIf="plantacion.invalid && plantacion.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+
+                <br>
+                <button class="btn btn-outline-dark w-100 mb-5" [disabled]="formLote.invalid" (click)="guardar()">
+                    <i class="far fa-save"></i> Guardar
+                </button>
+            </form>
+        </div>
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-8">
+                    <input type="text" class="form-control" placeholder="Buscar" name="busc" [(ngModel)]="buscadortxt">
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombres</th>
+                            <th scope="col">Hectáreas</th>
+                            <th scope="col">Plantación</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let x of lotes |filter:buscadortxt">
+                            <td><small>{{x.NOMBRELOTE}}</small></td>
+                            <td><small>{{x.HECTAREAS}}</small></td>
+                            <td><small>{{x.PLANTACION}}</small></td>
+                            <td>
+                                <button class="btn btn-sm btn-danger mb-2" (click)="eliminar(x.IDLOTE)">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                                <button class="btn btn-sm btn-info ms-4 mb-2" data-bs-toggle="modal"
+                                    data-bs-target="#modalUpProd" (click)="mostrarOne(x.IDLOTE)">
+                                    <i class="far fa-edit"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalUpProd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <i class="far fa-edit"></i> Modificar Lote
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label>Nombres:</label>
+                <input type="text" class="form-control" name="nombreslup" #nombrelsup="ngModel"
+                    [(ngModel)]="loteOne.NOMBRELOTE" required>
+                <div class="error-input rounded" *ngIf="nombrelsup.invalid && nombrelsup.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+                <br>
+                <label>Número de hectáreas:</label>
+                <input type="text" class="form-control" name="hectlup" #hectlsup="ngModel"
+                    [(ngModel)]="loteOne.HECTAREAS" maxlength="3" pattern="[0-9]+" required>
+                <div class="error-input rounded" *ngIf="hectlsup.invalid && hectlsup.touched">
+                    <small>Campo invalido!! (solo número)</small>
+                </div>
+
+                <br>
+
+                <label>Plantación: (valor aproximado)</label>
+                <input type="number" class="form-control" name="plantacionup" #plantacionup="ngModel"
+                    [(ngModel)]="loteOne.PLANTACION" required>
+                <div class="error-input rounded" *ngIf="plantacionup.invalid && plantacionup.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-info" (click)="actualizar()">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<app-spinner></app-spinner>

@@ -1,0 +1,23 @@
+<div class="container">
+    <h4><i class="fas fa-unlock-alt"></i> Cambiar contraseña</h4>
+    <hr>
+
+    <br>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <label>Contraseña actual:</label>
+            <input type="password" class="form-control mb-3" name="clave1" [(ngModel)]="clave1">
+
+            <label>Nueva contraseña:</label>
+            <input type="password" class="form-control" name="clave2" [(ngModel)]="clave2">
+
+            <br>
+            <div class="text-end">
+                <button class="btn btn-outline-dark" (click)="login()">
+                    <i class="far fa-edit"></i> Actualizar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

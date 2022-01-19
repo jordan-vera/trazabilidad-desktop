@@ -1,0 +1,87 @@
+<div class="container-fluid">
+    <h4><i class="fas fa-tasks"></i> Exportadoras</h4>
+    <hr>
+
+    <div class="row">
+        <div class="col-lg-5 border-end border-secondary">
+            <form #formExportadora="ngForm" id="formExportadora">
+                <label><b>Agregar Exportadora</b></label>
+                <br> <br>
+                <label>Nombres de exportadora:</label>
+                <input type="text" class="form-control" name="nombre" #nombre="ngModel" [(ngModel)]="exportadora.NOMBRE"
+                    required (ngModelChange)="exportadora.NOMBRE = $event.toUpperCase()">
+                <div class="error-input rounded" *ngIf="nombre.invalid && nombre.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+
+                <br>
+                <button class="btn btn-outline-dark w-100 mb-5" [disabled]="formExportadora.invalid"
+                    (click)="guardar()">
+                    <i class="far fa-save"></i> Guardar
+                </button>
+            </form>
+        </div>
+        <div class="col-lg-7">
+            <div class="row">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-8">
+                    <input type="text" class="form-control" placeholder="Buscar" name="busc" [(ngModel)]="buscadortxt">
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombres</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let x of exportadoras |filter:buscadortxt">
+                            <td><small>{{x.NOMBRE}}</small></td>
+                            <td>
+                                <button class="btn btn-sm btn-danger mb-2" (click)="eliminar(x.IDEXPORTADORA)">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                                <button class="btn btn-sm btn-info ms-4 mb-2" data-bs-toggle="modal"
+                                    data-bs-target="#modalUpProd" (click)="mostrarOne(x.IDEXPORTADORA)">
+                                    <i class="far fa-edit"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalUpProd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <i class="far fa-edit"></i> Modificar Exportadora
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label>Nombres:</label>
+                <input type="text" class="form-control" name="nombresup" #nombresup="ngModel"
+                    [(ngModel)]="exportadoraOne.NOMBRE" required>
+                <div class="error-input rounded" *ngIf="nombresup.invalid && nombresup.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+                <br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-info" (click)="actualizar()">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<app-spinner></app-spinner>
