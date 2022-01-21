@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Detalle, DetalleTemporal } from 'src/app/modelo/Detalle';
@@ -29,7 +30,6 @@ export class TrazabilidadComponent implements OnInit {
   public trazabilidades: any[];
   public buscadortxt: string = '';
 
-  public haciendaEstado: boolean = false;
   public valuadorEstado: boolean = false;
   public semanaEstado: boolean = false;
   public exportadoraEstado: boolean = false;
@@ -53,7 +53,8 @@ export class TrazabilidadComponent implements OnInit {
     private toastr: ToastrService,
     private _exportadoraService: ExportadorasService,
     private _loteService: LoteService,
-    private _detalleService: DetalleService
+    private _detalleService: DetalleService,
+    private _router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -61,6 +62,10 @@ export class TrazabilidadComponent implements OnInit {
     this.mostrarAll();
     this.getExportadoras();
     this.getLotes();
+  }
+
+  irAhEditTrazabilidad(id): void {
+    this._router.navigate(['/panel/edit-trazabilidad', id]);
   }
 
   printQR(): void {

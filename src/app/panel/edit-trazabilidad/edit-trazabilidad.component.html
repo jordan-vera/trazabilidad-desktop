@@ -1,0 +1,97 @@
+<div class="container-fluid">
+    <div class="row mt-2">
+        <div class="col-lg-10">
+            <h4><i class="far fa-edit"></i> Editar Trazabilidad</h4>
+        </div>
+        <div class="col-lg-2">
+            <button class="btn btn-outline-danger w-100">
+                <i class="fas fa-times"></i> Salir
+            </button>
+        </div>
+    </div>
+    <hr>
+
+    <form #formTrazabilidadUp="ngForm" id="formTrazabilidadUp">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 mb-3">
+                    <label>Evaluador:</label>
+                    <select class="form-select" name="ideva" #idevalu="ngModel"
+                        [(ngModel)]="trazabilidad.IDEVALUADOR">
+                        <option *ngFor="let x of evaluadores" [value]="x.IDEVALUADOR">{{x.NOMBRES}}</option>
+                    </select>
+                    <div class="error-input rounded" *ngIf="valuadorEstado == true">
+                        <small>Campo requerido!!</small>
+                    </div>
+                </div>
+                <div class="col-lg-2 mb-3">
+                    <label>Semana:</label>
+                    <input type="text" class="form-control" name="semana" #semana="ngModel" maxlength="3"
+                        pattern="[0-9]+" [(ngModel)]="trazabilidad.SEMANA">
+                    <div class="error-input rounded" *ngIf="semanaEstado == true">
+                        <small>Campo requerido!!</small>
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3">
+                    <label>Exportadora:</label>
+                    <select class="form-select" name="idexportadora" #idexportadora="ngModel"
+                        [(ngModel)]="trazabilidad.IDEXPORTADORA">
+                        <option *ngFor="let x of exportadoras" [value]="x.IDEXPORTADORA">{{x.NOMBRE}}
+                        </option>
+                    </select>
+                    <div class="error-input rounded" *ngIf="exportadoraEstado == true">
+                        <small>Campo requerido!!</small>
+                    </div>
+                </div>
+                <div class="col-lg-2 mb-3">
+                    <label>Porcentaje Higiene:</label>
+                    <input type="text" class="form-control" name="porcentaje" #porcentaje="ngModel"
+                        maxlength="3" pattern="[0-9]+" [(ngModel)]="trazabilidad.PORCENTAJEHIGIENE"
+                        placeholder="100/100">
+                    <div class="error-input rounded" *ngIf="porcentajeHigieneEstado == true">
+                        <small>Campo requerido!!</small>
+                    </div>
+                </div>
+                <div class="col-lg-2 mb-3">
+                    <label>Calif. evaluador:</label>
+                    <input type="text" class="form-control" name="califi" #califi="ngModel" maxlength="2"
+                        pattern="[0-9]+" [(ngModel)]="trazabilidad.CALIFICACIONEVALUADOR"
+                        placeholder="10/10">
+                    <div class="error-input rounded" *ngIf="calificacionEstado == true">
+                        <small>Campo requerido!!</small>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+    <hr>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">LOTE</th>
+                    <th scope="col">CAJAS</th>
+                    <th scope="col">OBSERVACIÓN</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let x of detalles; let i = index">
+                    <td>{{x.NOMBRELOTE}}</td>
+                    <td>{{x.CANT_CAJAS}}</td>
+                    <td><small>{{x.OBSERVACION}}</small></td>
+                    <td>
+                        <button class="btn btn-outline-info">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>

@@ -44,8 +44,7 @@
                         <button class="btn btn-sm btn-danger mb-2" (click)="eliminar(x.IDTRAZABILIDAD)">
                             <i class="far fa-trash-alt"></i>
                         </button>
-                        <button class="btn btn-sm btn-info ms-3 mb-2" data-bs-toggle="modal"
-                            data-bs-target="#editTraModal" (click)="mostrarOne(x.IDTRAZABILIDAD)">
+                        <button class="btn btn-sm btn-info ms-3 mb-2" (click)="irAhEditTrazabilidad(x.IDTRAZABILIDAD)">
                             <i class="far fa-edit"></i>
                         </button>
                         <button class="btn btn-sm btn-primary ms-3 mb-2" data-bs-toggle="modal"
@@ -235,14 +234,15 @@
                             <option *ngFor="let x of evaluadores" [value]="x.IDEVALUADOR">{{x.NOMBRES}}</option>
                         </select>
                     </div>
-                </div>
-
-                <div class="row mb-3">
                     <div class="col-lg-6">
                         <label>Semana:</label>
                         <input type="text" class="form-control" name="semanaup" #semanaup="ngModel"
                             [(ngModel)]="trazabilidadOne.SEMANA" required>
                     </div>
+                </div>
+
+                <div class="row mb-3">
+
                     <div class="col-lg-6">
                         <label>Exportadora:</label>
                         <select class="form-select" name="exportadoraup" #exportadoraup="ngModel"
@@ -266,15 +266,6 @@
                         <input type="text" class="form-control" name="califiup" #califiup="ngModel"
                             [(ngModel)]="trazabilidadOne.CALIFICACIONEVALUADOR" required>
                     </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-lg-6">
-                        <label>Cantidad de cajas:</label>
-                        <input type="text" class="form-control" name="cajasup" #cajaup="ngModel"
-                            [(ngModel)]="trazabilidadOne.CANTIDADCAJAS" required>
-                    </div>
-
                 </div>
                 <br>
             </div>
@@ -315,7 +306,7 @@
                                         <th scope="row">Evaluador:</th>
                                         <td colspan="2">{{evaluadorOne.CEDULA}} - {{evaluadorOne.NOMBRES}}</td>
                                     </tr>
-       
+
                                     <tr>
                                         <th scope="row">Exportadora:</th>
                                         <td colspan="2">{{exportadoraOne.NOMBRE}}</td>
@@ -326,11 +317,11 @@
                                         <th scope="row">Total de cajas:</th>
                                         <td colspan="2">{{trazabilidadOne.CANTIDADCAJAS}}</td>
                                     </tr>
-                                   
+
                                 </tbody>
                             </table>
                         </div>
-                        
+
                     </div>
                     <div class="row">
                         <div class="col-lg-4 ps-0 pe-0">

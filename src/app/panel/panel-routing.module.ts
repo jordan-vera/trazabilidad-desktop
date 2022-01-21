@@ -29,6 +29,10 @@ const routes: Routes = [
         loadChildren: () => import("./lotes/lotes.module").then(m => m.LotesModule)
       },
       {
+        path: "edit-trazabilidad/:id",
+        loadChildren: () => import("./edit-trazabilidad/edit-trazabilidad.module").then(m => m.EditTrazabilidadModule)
+      },
+      {
         path: 'cambiar-clave',
         component: CambiarClaveComponent
       },
