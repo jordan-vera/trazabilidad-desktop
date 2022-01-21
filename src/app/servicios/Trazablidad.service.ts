@@ -25,6 +25,10 @@ export class TrazabilidadService {
     return this._http.get(this.url + 'trazabilidad/' + id);
   }
 
+  actualizarCaja(idtrazabilidad, cajas): Observable<any> {
+    return this._http.get(this.url + 'trazabilidad-upcajas/' + idtrazabilidad + '/' + cajas);
+  }
+
   create(data: Trazabilidad): Observable<any> {
     let params = JSON.stringify(data);
     var headers = new HttpHeaders();

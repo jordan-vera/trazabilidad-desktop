@@ -36,6 +36,17 @@ export class DetalleService {
     return this._http.post(this.url + 'detalle', params, { headers: headers });
   }
 
+  update(IDDETALLE, CANT_CAJAS, OBSERVACION): Observable<any> {
+    let params = JSON.stringify({ IDDETALLE: IDDETALLE, CANT_CAJAS: CANT_CAJAS, OBSERVACION: OBSERVACION });
+    var headers = new HttpHeaders();
+    headers.append('Access-Control-Allow-Origin', '*');
+    headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+    headers.append('Accept', 'application/json');
+    headers.append('content-type', 'application/json');
+
+    return this._http.post(this.url + 'detalleupdate', params, { headers: headers });
+  }
+
   delete(id): Observable<any> {
     return this._http.get(this.url + 'detalledelete/' + id);
   }

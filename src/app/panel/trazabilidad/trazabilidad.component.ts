@@ -6,7 +6,7 @@ import { Detalle, DetalleTemporal } from 'src/app/modelo/Detalle';
 import { Evaluador } from 'src/app/modelo/Evaluador';
 import { Exportadora } from 'src/app/modelo/Exportadora';
 import { Lote } from 'src/app/modelo/Lote';
-import { Trazabilidad } from 'src/app/modelo/Trazabilidad';
+import { InfoQR, Trazabilidad } from 'src/app/modelo/Trazabilidad';
 import { DetalleService } from 'src/app/servicios/Detalle.service';
 import { EvaluadorService } from 'src/app/servicios/Evaluador.service';
 import { ExportadorasService } from 'src/app/servicios/Exportadoras.service';
@@ -14,18 +14,19 @@ import { Fecha } from 'src/app/servicios/fecha.service';
 import { LoteService } from 'src/app/servicios/Lote.service';
 import { TrazabilidadService } from 'src/app/servicios/Trazablidad.service';
 import { modalCloseInQR } from 'src/assets/modal.js';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-trazabilidad',
   templateUrl: './trazabilidad.component.html',
-  styleUrls: ['./trazabilidad.component.css']
+  styleUrls: ['./trazabilidad.component.scss']
 })
 export class TrazabilidadComponent implements OnInit {
 
   public evaluadores: Evaluador[];
   public trazabilidad: Trazabilidad = new Trazabilidad(null, null, null, '', null, null, '', '', 0);
   public trazabilidadOne: Trazabilidad = new Trazabilidad(0, 0, '', '', 0, '', '', '', 0);
-  public evaluadorOne: Evaluador = new Evaluador(null,'','','');
+  public evaluadorOne: Evaluador = new Evaluador(null, '', '', '');
   public exportadoraOne: Exportadora = new Exportadora(null, '');
   public trazabilidades: any[];
   public buscadortxt: string = '';
@@ -45,6 +46,14 @@ export class TrazabilidadComponent implements OnInit {
   public observacionDetalle: string = '';
   public detalleTemporal: DetalleTemporal[] = [];
   public detalleCreate: Detalle = new Detalle(null, null, null, '', '', null);
+  public detalles: Detalle[];
+  public infoqr: string = '';
+  public s: any[] = Array(192);
+
+  exportAsConfig: ExportAsConfig = {
+    type: 'pdf', 
+    elementIdOrContent: 'ssss'
+  }
 
   constructor(
     private _evaluadorService: EvaluadorService,
@@ -55,6 +64,7 @@ export class TrazabilidadComponent implements OnInit {
     private _loteService: LoteService,
     private _detalleService: DetalleService,
     private _router: Router,
+    private exportAsService: ExportAsService
   ) { }
 
   ngOnInit(): void {
@@ -62,6 +72,18 @@ export class TrazabilidadComponent implements OnInit {
     this.mostrarAll();
     this.getExportadoras();
     this.getLotes();
+  }
+
+  export() {
+    this.exportAsService.save(this.exportAsConfig, 'Código QR ' + Fecha.fechaActual() + ' ' + Fecha.horaActual()).subscribe(() => {
+      // save started
+    });
+  }
+  
+
+
+  generarImpresion(lote, exportadora, evaluador, fecha, hora, semana, higiene, calificacion): void {
+    this.infoqr = lote + '-' + exportadora + '-' + evaluador + '-' + fecha + '-' + hora + '-' + semana + '-' + higiene + '-' + calificacion;
   }
 
   irAhEditTrazabilidad(id): void {
@@ -220,10 +242,10 @@ export class TrazabilidadComponent implements OnInit {
     this._trazabilidadService.getOne(id).subscribe(
       response => {
         this.spinner.hide();
-        console.log(response)
         this.trazabilidadOne = response.response;
         this.evaluadorOne = response.response;
         this.exportadoraOne = response.response;
+        this.getDetallesOne(id);
       }, error => {
         this.spinner.hide();
         console.log(error);
@@ -231,15 +253,12 @@ export class TrazabilidadComponent implements OnInit {
     )
   }
 
-  actualizar(): void {
-    this.spinner.show();
-    this._trazabilidadService.update(this.trazabilidadOne).subscribe(
+  getDetallesOne(id): void {
+    this.detalles = [];
+    this._detalleService.getPortrazabilidad(id).subscribe(
       response => {
-        this.spinner.hide();
-        this.toastr.success('Hecho', 'Registro actualizado correctamente');
-        this.mostrarAll();
+        this.detalles = response.response;
       }, error => {
-        this.spinner.hide();
         console.log(error);
       }
     )

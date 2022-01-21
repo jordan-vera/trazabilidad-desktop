@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgxPrintModule } from 'ngx-print';
+import { ExportAsModule } from 'ngx-export-as';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { NgxPrintModule } from 'ngx-print';
     FormsModule,
     Ng2SearchPipeModule,
     QRCodeModule,
-    NgxPrintModule
+    NgxPrintModule,
+    ExportAsModule
   ]
 })
 export class TrazabilidadModule { }

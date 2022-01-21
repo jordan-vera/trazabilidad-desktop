@@ -19,7 +19,7 @@
             <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="buscadortxt">
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="">
         <table class="table align-middle table-striped ">
             <thead>
                 <tr>
@@ -47,14 +47,29 @@
                         <button class="btn btn-sm btn-info ms-3 mb-2" (click)="irAhEditTrazabilidad(x.IDTRAZABILIDAD)">
                             <i class="far fa-edit"></i>
                         </button>
-                        <button class="btn btn-sm btn-primary ms-3 mb-2" data-bs-toggle="modal"
+                        <button class="btn btn-sm btn-primary ms-3 me-3 mb-2" data-bs-toggle="modal"
                             data-bs-target="#InfoTraModal" (click)="mostrarOne(x.IDTRAZABILIDAD)">
                             <i class="far fa-file-alt"></i>
                         </button>
-                        <button class="btn btn-sm btn-warning ms-3 mb-2" data-bs-toggle="modal"
-                            data-bs-target="#PrintTraModal" (click)="mostrarOne(x.IDTRAZABILIDAD)">
-                            <i class="fas fa-print"></i>
-                        </button>
+
+
+                        <!-- Example single danger button -->
+                        <div class="btn-group pt-0 mt-0">
+                            <button type="button" class="btn btn-warning btn-sm dropdown-toggle mt-0"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-print"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li *ngFor="let xl of lotes" style="cursor: pointer;" data-bs-toggle="modal"
+                                data-bs-target="#PrintTraModal">
+                                    <a class="dropdown-item" (click)="generarImpresion(xl.NOMBRELOTE, x.NOMBRE, x.NOMBRES, x.FECHA,
+                                    x.HORA, x.SEMANA, x.PORCENTAJEHIGIENE, x.CANTIDADCAJAS)">
+                                        {{xl.NOMBRELOTE}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
 
                     </td>
                 </tr>
@@ -216,67 +231,6 @@
 </div>
 
 
-<div class="modal fade" id="editTraModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                    <i class="far fa-edit"></i> Actualizar datos
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row mb-3">
-                    <div class="col-lg-6">
-                        <label>Evaluador:</label>
-                        <select class="form-select" name="idevaup" #idevaluup="ngModel"
-                            [(ngModel)]="trazabilidadOne.IDEVALUADOR" required>
-                            <option *ngFor="let x of evaluadores" [value]="x.IDEVALUADOR">{{x.NOMBRES}}</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-6">
-                        <label>Semana:</label>
-                        <input type="text" class="form-control" name="semanaup" #semanaup="ngModel"
-                            [(ngModel)]="trazabilidadOne.SEMANA" required>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-
-                    <div class="col-lg-6">
-                        <label>Exportadora:</label>
-                        <select class="form-select" name="exportadoraup" #exportadoraup="ngModel"
-                            [(ngModel)]="trazabilidadOne.IDEXPORTADORA">
-                            <option *ngFor="let x of exportadoras" [value]="x.IDEXPORTADORA">{{x.NOMBRE}}</option>
-                        </select>
-                        <div class="error-input rounded" *ngIf="exportadoraEstado == true">
-                            <small>Campo requerido!!</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-lg-6">
-                        <label>Porcentaje Higiene:</label>
-                        <input type="text" class="form-control" name="porcentajeup" #porcentajeup="ngModel"
-                            [(ngModel)]="trazabilidadOne.PORCENTAJEHIGIENE" required>
-                    </div>
-                    <div class="col-lg-6">
-                        <label>Calificación evaluador:</label>
-                        <input type="text" class="form-control" name="califiup" #califiup="ngModel"
-                            [(ngModel)]="trazabilidadOne.CALIFICACIONEVALUADOR" required>
-                    </div>
-                </div>
-                <br>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="InfoTraModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -289,9 +243,9 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-12 " style="background-color: rgb(215, 236, 235);">
                             <table class="table table-sm">
-                                <tbody style="background-color: rgb(215, 236, 235);">
+                                <tbody>
                                     <tr>
                                         <th scope="row">Fecha y hora:</th>
                                         <td colspan="2">{{trazabilidadOne.FECHA}} {{trazabilidadOne.HORA}}</td>
@@ -323,12 +277,24 @@
                         </div>
 
                     </div>
-                    <div class="row">
-                        <div class="col-lg-4 ps-0 pe-0">
-                            <qrcode
-                                [qrdata]="'ECUADOR - COTOPAXI - LA MANÁ'+  '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+ '\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '"
-                                [width]="260" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">LOTE</th>
+                                    <th scope="col">CAJAS</th>
+                                    <th scope="col">OBSERVACIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let x of detalles; let i = index">
+                                    <td>{{x.NOMBRELOTE}}</td>
+                                    <td>{{x.CANT_CAJAS}}</td>
+                                    <td><small>{{x.OBSERVACION}}</small></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -346,224 +312,16 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-
-                <button type="button" onclick="window.print();">
-                    <i class="fas fa-print"></i>
+                <button type="button" class="btn btn-primary"  (click)="export()">
+                    <i class="fas fa-download"></i> Descargar
                 </button>
             </div>
             <div class="modal-body">
-                <div class="container">
+                <div class="container" id="ssss">
                     <div class="row">
-                        <div class="col-2 bg-secondary p-1 ">
-                            <qrcode id="print-section"
-                                [qrdata]="'ECUADOR - COTOPAXI - LA MANÁ ' + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
+                        <div class="col-1  p-1 contqr" *ngFor="let x of s">
+                            <qrcode class="coolQRCode" [qrdata]="infoqr" [width]="56" [errorCorrectionLevel]="'M'"></qrcode>
                         </div>
-                        <!--div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div>
-                        <div class="col-2 bg-secondary p-1">
-                            <qrcode
-                                [qrdata]="'ECUADOR - '+ provincia + ' - ' + canton + '\n' + 'FECHA: ' + trazabilidadOne.FECHA+'\n'+'EXPORTADORA: '+trazabilidadOne.EXPORTADORA+'\n'+ 'HIGIENE: '+ trazabilidadOne.PORCENTAJEHIGIENE+'%\nCALIFICACIÓN: '+trazabilidadOne.CALIFICACIONEVALUADOR+'/10\nEVALUADOR: '+nomEvaluador+'\nPRODUCTOR: '+productor.NOMBRES+'\nHACIENDA: '+nombreHacienda"
-                                [width]="116" [errorCorrectionLevel]="'M'"></qrcode>
-                        </div -->
                     </div>
                 </div>
 

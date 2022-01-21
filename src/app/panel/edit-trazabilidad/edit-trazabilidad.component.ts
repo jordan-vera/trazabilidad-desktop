@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 import { Detalle } from 'src/app/modelo/Detalle';
 import { Evaluador } from 'src/app/modelo/Evaluador';
 import { Exportadora } from 'src/app/modelo/Exportadora';
@@ -31,13 +32,17 @@ export class EditTrazabilidadComponent implements OnInit {
   public calificacionEstado: boolean = false;
   public cantidadcajasEstado: boolean = false;
 
+  public cantidadDeCajas: number = 0;
+
   constructor(
     private _route: ActivatedRoute,
     private _evaluadorService: EvaluadorService,
     private _exportadoraService: ExportadorasService,
     private spinner: NgxSpinnerService,
     private _trazabilidadService: TrazabilidadService,
-    private _detalleService: DetalleService
+    private _detalleService: DetalleService,
+    private toastr: ToastrService,
+    private _router: Router,
   ) {
     this._route.params.subscribe((params: Params) => {
       this.idtrazabilidad = params.id;
@@ -51,10 +56,98 @@ export class EditTrazabilidadComponent implements OnInit {
     this.getExportadoras();
   }
 
+  irAtras(): void {
+    this._router.navigate(['/panel/trazabilidad']);
+  }
+
+  actualizar(): void {
+    if (this.trazabilidad.IDEVALUADOR == 0 || this.trazabilidad.IDEVALUADOR == null) {
+      this.valuadorEstado = true;
+    } else {
+      this.valuadorEstado = false;
+      if (this.trazabilidad.SEMANA == 0 || this.trazabilidad.SEMANA == null) {
+        this.semanaEstado = true;
+      } else {
+        this.semanaEstado = false;
+        if (this.trazabilidad.IDEXPORTADORA == 0 || this.trazabilidad.IDEXPORTADORA == null) {
+          this.exportadoraEstado = true
+        } else {
+          this.exportadoraEstado = false;
+          if (this.trazabilidad.PORCENTAJEHIGIENE == '' || this.trazabilidad.PORCENTAJEHIGIENE == null) {
+            this.porcentajeHigieneEstado = true;
+          } else {
+            this.porcentajeHigieneEstado = false;
+            if (this.trazabilidad.CALIFICACIONEVALUADOR == '' || this.trazabilidad.CALIFICACIONEVALUADOR == null) {
+              this.calificacionEstado = true;
+            } else {
+              this.calificacionEstado = false;
+              if (this.trazabilidad.CANTIDADCAJAS == '' || this.trazabilidad.CANTIDADCAJAS == null) {
+                this.cantidadcajasEstado = true;
+              } else {
+                this.cantidadcajasEstado = false;
+                this.spinner.show();
+                this._trazabilidadService.update(this.trazabilidad).subscribe(
+                  response => {
+                    this.spinner.hide();
+                    this.toastr.success('Hecho', 'Registro actualizado correctamente');
+                    this.mostrarOne(this.idtrazabilidad);
+                  }, error => {
+                    this.spinner.hide();
+                    console.log(error);
+                  }
+                )
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   getDetalle(): void {
     this._detalleService.getPortrazabilidad(this.idtrazabilidad).subscribe(
       response => {
         this.detalles = response.response;
+      }, error => {
+        console.log(error);
+      }
+    )
+  }
+
+  getOneDetalle(iddetalle, cajas, observacion): void {
+    this.cantidadDeCajas = cajas;
+    this.detalle = new Detalle(iddetalle, 0, cajas, '', observacion, 0);
+  }
+
+  actualiazarDetalle(): void {
+    var resultado = 0;
+    if (this.detalle.CANT_CAJAS > this.cantidadDeCajas) {
+      resultado = this.detalle.CANT_CAJAS - this.cantidadDeCajas;
+      this.actualizarCajas('sumar', resultado);
+    } else if (this.detalle.CANT_CAJAS < this.cantidadDeCajas) {
+      resultado = this.cantidadDeCajas - this.detalle.CANT_CAJAS;
+      this.actualizarCajas('restar', resultado);
+    }
+
+    this._detalleService.update(this.detalle.IDDETALLE, this.detalle.CANT_CAJAS, this.detalle.OBSERVACION).subscribe(
+      response => {
+        this.toastr.success('Hecho', 'Registro guardado correctamente');
+        this.getDetalle();
+      }, error => {
+        console.log(error);
+      }
+    )
+
+  }
+
+  actualizarCajas(f, resultado): void {
+    if (f == 'sumar') {
+      this.trazabilidad.CANTIDADCAJAS = +this.trazabilidad.CANTIDADCAJAS + resultado + '';
+    } else if (f == 'restar') {
+      this.trazabilidad.CANTIDADCAJAS = +this.trazabilidad.CANTIDADCAJAS - resultado + '';
+    }
+    this._trazabilidadService.actualizarCaja(this.idtrazabilidad, this.trazabilidad.CANTIDADCAJAS).subscribe(
+      response => {
       }, error => {
         console.log(error);
       }
