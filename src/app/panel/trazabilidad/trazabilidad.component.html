@@ -29,6 +29,7 @@
                     <th scope="col">Evaluador</th>
                     <th scope="col">Higiene</th>
                     <th scope="col">Cajas</th>
+                    <th scope="col">Calificación</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -40,6 +41,7 @@
                     <td><small>{{x.NOMBRES}}</small></td>
                     <td><small>{{x.PORCENTAJEHIGIENE}}</small></td>
                     <td><small>{{x.CANTIDADCAJAS}}</small></td>
+                    <td><small>{{x.CALIFICACIONEVALUADOR}}</small></td>
                     <td>
                         <button class="btn btn-sm btn-danger mb-2" (click)="eliminar(x.IDTRAZABILIDAD)">
                             <i class="far fa-trash-alt"></i>
@@ -63,7 +65,7 @@
                                 <li *ngFor="let xl of lotes" style="cursor: pointer;" data-bs-toggle="modal"
                                 data-bs-target="#PrintTraModal">
                                     <a class="dropdown-item" (click)="generarImpresion(xl.NOMBRELOTE, x.NOMBRE, x.NOMBRES, x.FECHA,
-                                    x.HORA, x.SEMANA, x.PORCENTAJEHIGIENE, x.CANTIDADCAJAS)">
+                                    x.HORA, x.SEMANA, x.PORCENTAJEHIGIENE, x.CANTIDADCAJAS, x.CALIFICACIONEVALUADOR)">
                                         {{xl.NOMBRELOTE}}
                                     </a>
                                 </li>
@@ -319,8 +321,8 @@
             <div class="modal-body">
                 <div class="container" id="ssss">
                     <div class="row">
-                        <div class="col-1  p-1 contqr" *ngFor="let x of s">
-                            <qrcode class="coolQRCode" [qrdata]="infoqr" [width]="56" [errorCorrectionLevel]="'M'"></qrcode>
+                        <div class="col-3  p-1 contqr" *ngFor="let x of s">
+                            <qrcode class="coolQRCode" [qrdata]="infoqr" [width]="175" [errorCorrectionLevel]="'M'"></qrcode>
                         </div>
                     </div>
                 </div>

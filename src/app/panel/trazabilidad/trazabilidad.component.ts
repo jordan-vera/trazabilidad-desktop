@@ -51,7 +51,7 @@ export class TrazabilidadComponent implements OnInit {
   public s: any[] = Array(192);
 
   exportAsConfig: ExportAsConfig = {
-    type: 'pdf', 
+    type: 'pdf',
     elementIdOrContent: 'ssss'
   }
 
@@ -79,11 +79,11 @@ export class TrazabilidadComponent implements OnInit {
       // save started
     });
   }
-  
 
 
-  generarImpresion(lote, exportadora, evaluador, fecha, hora, semana, higiene, calificacion): void {
-    this.infoqr = lote + '-' + exportadora + '-' + evaluador + '-' + fecha + '-' + hora + '-' + semana + '-' + higiene + '-' + calificacion;
+
+  generarImpresion(lote, exportadora, evaluador, fecha, hora, semana, higiene, cajas, calificacion): void {
+    this.infoqr = lote + '##' + exportadora + '##' + evaluador + '##' + fecha + '##' + hora + '##' + semana + '##' + higiene + '##' + cajas + '##' + calificacion;
   }
 
   irAhEditTrazabilidad(id): void {
