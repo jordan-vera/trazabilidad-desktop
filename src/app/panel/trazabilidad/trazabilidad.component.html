@@ -321,8 +321,8 @@
             <div class="modal-body">
                 <div class="container" id="ssss">
                     <div class="row">
-                        <div class="col-3  p-1 contqr" *ngFor="let x of s">
-                            <qrcode class="coolQRCode" [qrdata]="infoqr" [width]="175" [errorCorrectionLevel]="'M'"></qrcode>
+                        <div class="col-3  p-1 contqr" *ngFor="let x of s; let i = index">
+                            <qrcode class="coolQRCode" [qrdata]="infoqr + mascaraCaja(i)" [width]="175" [errorCorrectionLevel]="'M'"></qrcode>
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ import { Detalle, DetalleTemporal } from 'src/app/modelo/Detalle';
 import { Evaluador } from 'src/app/modelo/Evaluador';
 import { Exportadora } from 'src/app/modelo/Exportadora';
 import { Lote } from 'src/app/modelo/Lote';
-import { InfoQR, Trazabilidad } from 'src/app/modelo/Trazabilidad';
+import { Trazabilidad } from 'src/app/modelo/Trazabilidad';
 import { DetalleService } from 'src/app/servicios/Detalle.service';
 import { EvaluadorService } from 'src/app/servicios/Evaluador.service';
 import { ExportadorasService } from 'src/app/servicios/Exportadoras.service';
@@ -48,7 +48,8 @@ export class TrazabilidadComponent implements OnInit {
   public detalleCreate: Detalle = new Detalle(null, null, null, '', '', null);
   public detalles: Detalle[];
   public infoqr: string = '';
-  public s: any[] = Array(192);
+  public cantidadCajasLote: number = 0;
+  public s: any[];
 
   exportAsConfig: ExportAsConfig = {
     type: 'pdf',
@@ -80,10 +81,38 @@ export class TrazabilidadComponent implements OnInit {
     });
   }
 
+  mascaraCaja(index: number): string {
+    var resultado = '';
+    var numeroMano = 1;
+    var division = Math.trunc((index) / 10);
+    let divisionString = ((index / 10) + 1) + '';
 
+    if(this.EsDecimal(divisionString) == true){
+      let numTemporal = divisionString.split(".")[1];
+      numeroMano = +numTemporal+1;
+    } else {
+      numeroMano = 1;
+    }
+
+    var resultado = '' + (division + 1) + '##' + numeroMano;
+
+    return resultado;
+  }
+
+  EsDecimal(numero): boolean {
+    var result = false;
+    if (numero % 1 == 0) {
+      result = false;
+    } else {
+      result = true;
+    }
+    return result;
+  }
 
   generarImpresion(lote, exportadora, evaluador, fecha, hora, semana, higiene, cajas, calificacion): void {
-    this.infoqr = lote + '##' + exportadora + '##' + evaluador + '##' + fecha + '##' + hora + '##' + semana + '##' + higiene + '##' + cajas + '##' + calificacion;
+    this.cantidadCajasLote = cajas;
+    this.s = Array(+this.cantidadCajasLote)
+    this.infoqr = lote + '##' + exportadora + '##' + evaluador + '##' + fecha + '##' + hora + '##' + semana + '##' + higiene + '##' + cajas + '##' + calificacion + '##';
   }
 
   irAhEditTrazabilidad(id): void {
