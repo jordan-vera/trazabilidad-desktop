@@ -1,0 +1,58 @@
+<div class="container-fluid">
+    <h4><i class="fas fa-calendar-check"></i> Hectáreas</h4>
+    <hr>
+
+    <div class="row">
+        <div class="col-lg-4 border-end border-secondary">
+            <form #formHecta="ngForm" id="formHecta">
+                <label><b>Agregar Hectárea</b></label>
+                <br> <br>
+                <label>Nombres de hectaréa:</label>
+                <input type="text" class="form-control" name="hectarea" [(ngModel)]="hectarea.hectareas" required>
+
+                <br>
+
+                <label>Lotes</label>
+                <select class="form-control" name="idlote" #idlote="ngModel" [(ngModel)]="hectarea.idlote" required>
+                    <option *ngFor="let x of lotes" value="{{x.IDLOTE}}">{{x.NOMBRELOTE}}</option>
+                </select>
+                <br>
+                <button class="btn btn-outline-dark w-100 mb-5" [disabled]="formHecta.invalid" (click)="guardar()">
+                    <i class="far fa-save"></i> Guardar
+                </button>
+            </form>
+        </div>
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-8">
+                    <input type="text" class="form-control" placeholder="Buscar" name="busc" [(ngModel)]="buscadortxt">
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Hectárea</th>
+                            <th scope="col">Lote</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let x of hectareas |filter:buscadortxt">
+                            <td><small>{{x.hectareas}}</small></td>
+                            <td><small>{{x.NOMBRELOTE}}</small></td>
+                            <td>
+                                <button class="btn btn-sm btn-danger mb-2" (click)="eliminar(x.idhectareas)">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-spinner></app-spinner>

@@ -16,15 +16,6 @@
 
                 <br>
 
-                <label>Número de hectáreas:</label>
-                <input type="text" class="form-control" name="hectl" #hectls="ngModel" [(ngModel)]="lote.HECTAREAS"
-                    maxlength="3" pattern="[0-9]+" required>
-                <div class="error-input rounded" *ngIf="hectls.invalid && hectls.touched">
-                    <small>Campo invalido!! (solo número)</small>
-                </div>
-
-                <br>
-
                 <label>Plantación: (valor aproximado)</label>
                 <input type="number" class="form-control" name="plantacion" #plantacion="ngModel"
                     [(ngModel)]="lote.PLANTACION" required>
@@ -50,7 +41,6 @@
                     <thead>
                         <tr>
                             <th scope="col">Nombres</th>
-                            <th scope="col">Hectáreas</th>
                             <th scope="col">Plantación</th>
                             <th scope="col"></th>
                         </tr>
@@ -58,7 +48,6 @@
                     <tbody>
                         <tr *ngFor="let x of lotes |filter:buscadortxt">
                             <td><small>{{x.NOMBRELOTE}}</small></td>
-                            <td><small>{{x.HECTAREAS}}</small></td>
                             <td><small>{{x.PLANTACION}}</small></td>
                             <td>
                                 <button class="btn btn-sm btn-danger mb-2" (click)="eliminar(x.IDLOTE)">
@@ -94,14 +83,6 @@
                 <div class="error-input rounded" *ngIf="nombrelsup.invalid && nombrelsup.touched">
                     <small>Campo invalido!!</small>
                 </div>
-                <br>
-                <label>Número de hectáreas:</label>
-                <input type="text" class="form-control" name="hectlup" #hectlsup="ngModel"
-                    [(ngModel)]="loteOne.HECTAREAS" maxlength="3" pattern="[0-9]+" required>
-                <div class="error-input rounded" *ngIf="hectlsup.invalid && hectlsup.touched">
-                    <small>Campo invalido!! (solo número)</small>
-                </div>
-
                 <br>
 
                 <label>Plantación: (valor aproximado)</label>

@@ -28,10 +28,12 @@ export class LoginComponent implements OnInit {
     if (this.nick != '' && this.clave != '') {
       this._adminService.login(this.nick, this.clave).subscribe(
         response => {
+          console.log(response);
           this.spinner.hide();
           if (response.response) {
             this.credencialesEstado = true;
             localStorage.setItem("nick", this.nick);
+            localStorage.setItem("tipouser", response.response.tipo);
             this._router.navigate(['/panel']);
           } else {
             this.credencialesEstado = false;

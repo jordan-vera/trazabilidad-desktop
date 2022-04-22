@@ -8,11 +8,14 @@ import { Router } from '@angular/router';
 })
 export class PanelComponent implements OnInit {
 
+  public tipouser: string = '';
+
   constructor(
     private _router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.tipouser = localStorage.getItem('tipouser');
   }
 
   cerrarSesion(): void {
@@ -31,6 +34,10 @@ export class PanelComponent implements OnInit {
     this._router.navigate(['/panel/lotes']);
   }
 
+  irAhUsuarios(): void {
+    this._router.navigate(['/panel/usuarios']);
+  }
+
   irAhHaciendas(): void {
     this._router.navigate(['/panel/haciendas']);
   }
@@ -41,6 +48,10 @@ export class PanelComponent implements OnInit {
 
   irAhCambiaClave(): void {
     this._router.navigate(['/panel/cambiar-clave']);
+  }
+
+  irAhHectareas(): void {
+    this._router.navigate(['/panel/hectareas']);
   }
 
 }

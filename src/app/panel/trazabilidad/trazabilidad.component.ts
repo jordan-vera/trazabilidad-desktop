@@ -217,7 +217,7 @@ export class TrazabilidadComponent implements OnInit {
                     this.spinner.hide();
                     this.toastr.success('Hecho', 'Registro guardado correctamente');
                     this.mostrarAll();
-                    this.limpiarCampos();
+                    this.limpiarCampos(this.trazabilidad.IDEXPORTADORA);
                   }, error => {
                     this.spinner.hide();
                     console.log(error)
@@ -229,6 +229,13 @@ export class TrazabilidadComponent implements OnInit {
         }
       }
     }
+  }
+
+  limpiarCampos(IDEXPORTADORA): void {
+    var dirtyFormID = 'formTrazabilidad';
+    var resetForm = <HTMLFormElement>document.getElementById(dirtyFormID);
+    resetForm.reset();
+    this.trazabilidad.IDEXPORTADORA = IDEXPORTADORA;
   }
 
   guardarDetalle(idtrazabilidad): void {
@@ -245,13 +252,6 @@ export class TrazabilidadComponent implements OnInit {
       }
     }
   }
-
-  limpiarCampos(): void {
-    var dirtyFormID = 'formTrazabilidad';
-    var resetForm = <HTMLFormElement>document.getElementById(dirtyFormID);
-    resetForm.reset();
-  }
-
 
   mostrarAll(): void {
     this.spinner.show();

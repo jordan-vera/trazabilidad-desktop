@@ -15,6 +15,7 @@ import { TrazabilidadService } from './servicios/Trazablidad.service';
 import { ExportadorasService } from './servicios/Exportadoras.service';
 import { DetalleService } from './servicios/Detalle.service';
 import { FormsModule } from '@angular/forms';
+import { HectareaService } from './servicios/hectarea.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { FormsModule } from '@angular/forms';
     CantonprovinciaService,
     TrazabilidadService,
     ExportadorasService,
-    DetalleService
+    DetalleService,
+    HectareaService
   ],
   bootstrap: [AppComponent]
 })

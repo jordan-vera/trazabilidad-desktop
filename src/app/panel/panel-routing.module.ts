@@ -33,6 +33,14 @@ const routes: Routes = [
         loadChildren: () => import("./edit-trazabilidad/edit-trazabilidad.module").then(m => m.EditTrazabilidadModule)
       },
       {
+        path: "usuarios",
+        loadChildren: () => import("./usuarios/usuarios.module").then(m => m.UsuariosModule)
+      },
+      {
+        path: "hectareas",
+        loadChildren: () => import("./hectareas/hectareas.module").then(m => m.HectareasModule)
+      },
+      {
         path: 'cambiar-clave',
         component: CambiarClaveComponent
       },

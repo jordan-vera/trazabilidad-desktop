@@ -10,11 +10,10 @@ import { FormsModule } from '@angular/forms';
 import { QRCodeModule } from 'angularx-qrcode';
 import {NgxPrintModule} from 'ngx-print';
 
-
 @NgModule({
   declarations: [
     PanelComponent,
-    CambiarClaveComponent
+    CambiarClaveComponent,
   ],
   imports: [
     CommonModule,

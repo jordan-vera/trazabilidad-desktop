@@ -1,0 +1,77 @@
+<div class="container-fluid">
+    <h4><i class="fas fa-users-cog"></i> Usuarios</h4>
+    <hr>
+    <div class="row">
+        <div class="col-lg-4">
+            <form #formUser="ngForm" id="formUser">
+                <label><b>Agregar Usuario</b></label>
+                <br> <br>
+                <label>Nombres:</label>
+                <input type="text" class="form-control" name="nombres" #nombres="ngModel" [(ngModel)]="admin.nombres"
+                    required (ngModelChange)="admin.nombres = $event.toUpperCase()">
+                <div class="error-input rounded" *ngIf="nombres.invalid && nombres.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+                <br>
+                <label>Nick:</label>
+                <input type="text" class="form-control" name="nick" #nick="ngModel" [(ngModel)]="admin.nick"
+                    required>
+                <div class="error-input rounded" *ngIf="nick.invalid && nick.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+                <br>
+                <label>Clave:</label>
+                <input type="password" class="form-control" name="clave" #clave="ngModel" [(ngModel)]="admin.clave"
+                    required>
+                <div class="error-input rounded" *ngIf="clave.invalid && clave.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+                <br>
+                <label>Tipo:</label>
+                <select class="form-control" name="tipo" #tipo="ngModel" [(ngModel)]="admin.tipo"
+                required>
+                    <option value="Usuario">Usuario</option>
+                    <option value="Superusuario">Superusuario</option>
+                  </select>
+                <div class="error-input rounded" *ngIf="tipo.invalid && tipo.touched">
+                    <small>Campo invalido!!</small>
+                </div>
+
+                <br>
+
+                <button class="btn btn-primary w-100" (click)="guardar()">
+                    Guardar
+                </button>
+             </form>   
+        </div>
+        <div class="col-lg-8">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombres</th>
+                    <th scope="col">Nick</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of administradores">
+                    <th scope="row">{{x.idadmin}}</th>
+                    <td>{{x.nombres}}</td>
+                    <td>{{x.nick}}</td>
+                    <td>{{x.tipo}}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger mb-2" (click)="eliminar(x.idadmin)">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+
+
+<app-spinner></app-spinner>

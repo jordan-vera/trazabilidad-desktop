@@ -11,8 +11,8 @@ import { LoteService } from 'src/app/servicios/Lote.service';
 })
 export class LotesComponent implements OnInit {
 
-  public lote: Lote = new Lote(0, '', '', null);
-  public loteOne: Lote = new Lote(0, '', '', null);
+  public lote: Lote = new Lote(0, '', null);
+  public loteOne: Lote = new Lote(0, '', null);
   public buscadortxt: string = '';
   public lotes: Lote[] = [];
 
